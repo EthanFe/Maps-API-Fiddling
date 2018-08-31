@@ -1,7 +1,3 @@
-require "pry"
-require "rest-client"
-require "json"
-
 class Data_Requester
   @@api_key = "AIzaSyATBqOgLuF5nHpFnmBTdSBu22SGXin6N7A"
   def self.get_data_for_keyword(keyword)

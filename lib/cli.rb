@@ -1,5 +1,4 @@
-require_relative "./data_requester.rb"
-require_relative "./place.rb"
+require_relative "../config/environment.rb"
 
 def run_interface
   mode = :search
@@ -7,7 +6,7 @@ def run_interface
   while true
     keyword = ask_for_keyword(mode, sort_type)
     if keyword == "quit"
-      return
+      return 1
     end
 
     case mode
@@ -42,9 +41,19 @@ end
 
 def print_places(places, sort_by)
   places = sort_places(places, sort_by)
+
+  table_header = ["Distance", "Rating", "Name", "Address"]
+  table_rows = []
   places.each do |place|
-    puts "#{place.name}: distance #{place.distance} miles, rating #{place.rating} / 5 (#{place.address})"
+    table_rows << ["#{place.distance} miles", "#{place.rating} / 5", place.name, place.address]
   end
+  table = TTY::Table.new(table_header, table_rows)
+  rendered_table = table.render(:ascii) do |renderer|
+    # renderer.alignment = [:center]
+    renderer.border.style = :green
+    renderer.padding = [0,1,0,1]
+  end
+  puts rendered_table
 end
 
 def sort_places(places, sort_by)

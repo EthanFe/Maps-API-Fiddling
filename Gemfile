@@ -11,3 +11,5 @@ gem "rest-client", "~> 2.0"
 gem "json", "~> 2.1"
 
 gem "pry", "~> 0.11.3"
+
+gem "tty-table", "~> 0.10.0"

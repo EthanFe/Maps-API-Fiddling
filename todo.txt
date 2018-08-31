@@ -1,0 +1,3 @@
+make cli/results prettier
+treat 0 rating as no rating available
+try searching for multiple distances at once

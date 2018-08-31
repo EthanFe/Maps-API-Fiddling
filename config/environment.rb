@@ -1,0 +1,7 @@
+require "pry"
+require "rest-client"
+require "json"
+require "tty-table"
+require_relative "../lib/data_requester.rb"
+require_relative "../lib/place.rb"
+require_relative "../lib/cli.rb"
