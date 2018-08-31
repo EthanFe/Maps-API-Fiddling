@@ -46,10 +46,15 @@ def print_places(places, sort_by)
     table_rows << ["#{place.distance} miles", "#{place.rating} / 5", place.name, place.address]
   end
   table = TTY::Table.new(table_header, table_rows)
+  pastel = Pastel.new
   rendered_table = table.render(:ascii) do |renderer|
     # renderer.alignment = [:center]
     renderer.border.style = :green
     renderer.padding = [0,1,0,1]
+    renderer.filter = proc do |val, row_index, col_index|
+      bolded_column = sort_by == "distance" ? 0 : 1 # this code is terrible.
+      col_index == bolded_column && row_index == 0 ? pastel.bold(val) : val
+    end
   end
   puts rendered_table
 end
@@ -57,10 +62,8 @@ end
 def sort_places(places, sort_by)
   case sort_by
   when "rating"
-    puts "Displaying sorted by rating:"
     places = (places.sort_by {|place| place.rating}).reverse
   when "distance"
-    puts "Displaying sorted by distance:"
     places.sort_by! {|place| place.distance}
   end
   places
