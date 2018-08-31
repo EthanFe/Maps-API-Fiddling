@@ -43,7 +43,7 @@ def print_places(places, sort_by)
   table_header = ["Distance", "Rating", "Name", "Address"]
   table_rows = []
   places.each do |place|
-    table_rows << ["#{place.distance} miles", "#{place.rating} / 5", place.name, place.address]
+    table_rows << ["#{place.distance} km", "#{place.rating} / 5", place.name, limit_length(place.address, 32)]
   end
   table = TTY::Table.new(table_header, table_rows)
   pastel = Pastel.new
@@ -57,6 +57,10 @@ def print_places(places, sort_by)
     end
   end
   puts rendered_table
+end
+
+def limit_length(string, length)
+  string.length > length ? string[0...length - 3] + "..." : string
 end
 
 def sort_places(places, sort_by)

@@ -2,3 +2,5 @@ make cli/results prettier
   fix table exploding if width is too high
 treat 0 rating as no rating available
 try searching for multiple distances at once
+
+try getting data from yelp api?

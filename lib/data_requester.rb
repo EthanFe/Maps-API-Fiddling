@@ -31,11 +31,11 @@ class Data_Requester
   end
 
   def self.get_distance_between(address1, address2)
-    request_url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=#{address1}&destinations=#{address2}&key=#{@@api_key}"
+    request_url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=#{address1}&destinations=#{address2}&mode=walking&key=#{@@api_key}"
     encoded_url = URI.encode(request_url) ## prevent weird characters in the address from breaking shit
     distance_matrix_data = JSON.parse(RestClient.get(encoded_url))
 
-    distance = distance_matrix_data["rows"][0]["elements"][0]["distance"]["text"].chomp(" mi").to_f
+    distance = distance_matrix_data["rows"][0]["elements"][0]["distance"]["text"].chomp(" km").to_f
     eta = distance_matrix_data["rows"][0]["elements"][0]["duration"]["text"]
     {"distance" => distance, "eta" => eta}
   end
