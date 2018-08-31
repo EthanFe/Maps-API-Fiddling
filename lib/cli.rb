@@ -3,11 +3,9 @@ require_relative "../config/environment.rb"
 def run_interface
   mode = :search
   sort_type = "rating"
-  while true
-    keyword = ask_for_keyword(mode, sort_type)
-    if keyword == "quit"
-      return 1
-    end
+  while mode
+    keyword = ask_for_keyword(mode)
+    mode = nil if keyword == "quit"
 
     case mode
     when :search
@@ -68,14 +66,14 @@ def sort_places(places, sort_by)
   places
 end
 
-def ask_for_keyword(mode, sort_type)
+def ask_for_keyword(mode)
   case mode
   when :search
     puts "Enter restaurant type to search for, or quit to exit"
   when :sort_type
     puts "Enter 'rating' or 'distance' to re-sort, 'new' to start a new search, or 'quit' to exit"
   end
-  gets.chomp
+  gets.chomp!
 end
 
 run_interface
