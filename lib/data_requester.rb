@@ -25,6 +25,26 @@ class Data_Requester
     RestClient.get(request_url)
   end
 
+  def self.get_distances_to(places)
+    flatiron_address = "708+S+Main+St,+Houston,+TX"
+
+    destinations_string = "destinations="
+    places.each_with_index do |place, i|
+      destinations_string << place.address
+      destinations_string << "|" if i != places.length - 1
+    end
+
+    request_url = "https://maps.googleapis.com/maps/api/distancematrix/json?units=metric&origins=#{flatiron_address}&#{destinations_string}&mode=walking&key=#{@@api_key}"
+
+    encoded_url = URI.encode(request_url) ## prevent weird characters in the address from breaking shit
+    distance_matrix_data = JSON.parse(RestClient.get(encoded_url))
+
+    distance_matrix_data["rows"][0]["elements"]
+    # distance = distance_matrix_data["rows"][0]["elements"][0]["distance"]["text"].chomp(" km").to_f
+    # eta = distance_matrix_data["rows"][0]["elements"][0]["duration"]["text"]
+    # {"distance" => distance, "eta" => eta}
+  end
+
   def self.get_distance_to(destination)
     flatiron_address = "708+S+Main+St,+Houston,+TX"
     self.get_distance_between(flatiron_address, destination)

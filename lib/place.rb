@@ -4,9 +4,16 @@ class Place
   attr_accessor :location, :id, :name, :open_now, :rating, :types, :address, :distance, :eta
 
   def self.parse_api_data(data)
+    #build base data
     places = []
     data.each do |result|
       places << self.create(result)
+    end
+
+    #add distance data
+    distances = Data_Requester.get_distances_to(places)
+    places.each_with_index do |place, i|
+      place.distance = distances[i]["distance"]["text"].chomp(" km").to_f
     end
     places
   end
@@ -24,12 +31,6 @@ class Place
     place.rating = info["rating"]
     place.types = info["types"]
     place.address = info["vicinity"]
-
-    puts "Getting data for #{place.name}"
-    distance_and_eta = Data_Requester.get_distance_to(place.address)
-    place.distance = distance_and_eta["distance"]
-    place.eta = distance_and_eta["eta"]
-    # @@all << place
     place
   end
 
